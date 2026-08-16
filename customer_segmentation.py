@@ -7,17 +7,6 @@ Segments an online retailer's customers using RFM features
 Run with:  python customer_segmentation.py
 """
 
-# # Customer Segmentation using RFM Analysis and K-Means
-# A beginner-friendly project that groups customers of an online retailer using
-# **RFM** (Recency, Frequency, Monetary) features and **K-Means clustering**, then
-# turns each group into a persona with a marketing action.
-#
-# Dataset: UCI / Kaggle **Online Retail** (e-commerce transactions from a UK retailer).
-
-
-# ## 1. Import Libraries
-
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -30,14 +19,9 @@ from sklearn.metrics import silhouette_score, adjusted_rand_score
 from pathlib import Path
 import kagglehub
 
-# plotting style
-sns.set_style("whitegrid")
-print("Libraries imported")
 
-
-# ## 2. Load Dataset
+# Load Dataset
 # Download the Online Retail dataset from Kaggle and read it into a DataFrame.
-
 
 # Download the dataset (this may take a minute on first run)
 data_dir = kagglehub.dataset_download("carrie1/ecommerce-data")
@@ -56,7 +40,7 @@ print("Shape:", df.shape)
 print(df.head())
 
 
-# ## 3. Data Cleaning
+# Data Cleaning
 # Drop rows with a missing CustomerID, cancelled orders, and negative/zero
 # quantity or price so the data only contains real purchases.
 
@@ -83,7 +67,7 @@ print(df_clean.isnull().sum())
 print(df_clean.head())
 
 
-# ## 4. Feature Engineering (RFM)
+# Feature Engineering (RFM)
 # Create a **TotalPrice** column, then compute **Recency**, **Frequency** and
 # **Monetary** per customer and combine them into one `rfm` dataframe.
 
@@ -110,7 +94,7 @@ print("Number of customers:", rfm.shape[0])
 print(rfm.head().sort_values("Monetary", ascending=False))
 
 
-# ## 5. Exploratory Data Analysis
+# Exploratory Data Analysis
 # Look at the distribution of each RFM feature and spot outliers with boxplots.
 
 
@@ -137,7 +121,7 @@ print("Skewness:")
 print(rfm.skew())
 
 
-# ## 6. Preprocessing
+# Preprocessing
 # The features are heavily right-skewed, so cap the extremes at the 99th
 # percentile, then standardize everything so the features are comparable.
 
@@ -161,7 +145,7 @@ rfm_scaled = pd.DataFrame(rfm_scaled, columns=rfm.columns, index=rfm.index)
 print(rfm_scaled.describe().round(2))
 
 
-# ## 7. Finding Optimal K
+# Finding Optimal K
 # Use the **elbow method** (WCSS) and **silhouette score** to choose how many
 # clusters to use.
 
@@ -201,7 +185,7 @@ print("\nBased on the plots, k = 4 looks like a good choice")
 k = 4
 
 
-# ## 8. K-Means Clustering
+# K-Means Clustering
 # Fit K-Means with the chosen `k` and add the cluster labels to `rfm`.
 
 
@@ -214,7 +198,7 @@ rfm["Cluster"] = kmeans.labels_
 print(rfm.head())
 
 
-# ## 9. Cluster Stability Check
+# Cluster Stability Check
 # Re-run K-Means with a few different `random_state` values and compare the
 # cluster assignments with the Adjusted Rand Index (high = stable clusters).
 
@@ -232,7 +216,7 @@ print("ARI scores:", ari_scores)
 print("Average stability score:", round(np.mean(ari_scores), 3))
 
 
-# ## 10. Cluster Profiling
+# Cluster Profiling
 # See what each cluster looks like on average, rank them by value, give each a
 # persona name, and plot the clusters.
 
@@ -264,7 +248,7 @@ sns.pairplot(plot_data, vars=["Recency", "Frequency", "Monetary"], hue="Cluster"
 plt.show()
 
 
-# ## 11. Segment-to-Action Mapping
+# Segment-to-Action Mapping
 # Turn each persona into a clear marketing action and build a summary table.
 
 
@@ -289,7 +273,7 @@ summary = summary[["Cluster", "persona", "customer_count",
 print(summary)
 
 
-# ## 12. Business Insights
+# Business Insights
 # **What these segments mean for the business:**
 #
 # - **Champions** are your most valuable customers — they buy often, spend the most,
