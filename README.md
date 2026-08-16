@@ -1,4 +1,4 @@
-# 🛒 Customer Segmentation with RFM & K-Means
+# Customer Segmentation with RFM & K-Means
 
 A portfolio data-science project that turns 540,000+ e-commerce transaction rows
 into clear, named customer segments (with a marketing action for each) using
